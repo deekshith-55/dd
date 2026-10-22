@@ -1,53 +1,52 @@
-pipeline{
-agent any
+pipeline {
+    agent any
 
-environment{
-DOCKER_IMAGE = "deekshith55/imagename2"
-}
+    environment {
+        DOCKER_IMAGE = "akshatha29/docimg"
+    }
 
-stages{
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                    url: ''
+            }
+        }
 
-stage('Clone Repository'){
-steps{
-git 'https://github.com/deekshith-55/dd.git'
-}
-}
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t %DOCKER_IMAGE%:latest .'
+            }
+        }
 
-stage('Build Docker Image'){
-steps{
-script{
-docker.build("${DOCKER_IMAGE}:latest")
-}
-}
-}
-stage('Login to Docker Hub'){
-steps{
-withCredentials([usernamePassword(
-credentialsId: 'dockerhub-creds',
-usernameVariable: 'DOCKER_USER',
-passwordVariable: 'DOCKER_PASS'
-)]){
-bat 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-}
-}
-}
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([string(
+                    credentialsId: 'dockerhub-PAT',
+                    variable: 'DOCKER_PAT'
+                )]) {
+                    bat '''
+                    @echo off
+                    echo %DOCKER_PAT%|docker login -u akshatha29 --password-stdin
+                   if errorlevel 1 exit /b 1
+                    '''
+                }
+            }
+        }
 
-stage ('Push Docker Image'){
-steps{
-script{
-docker.withRegistry('','dockerhub-creds'){
-docker.image("${DOCKER_IMAGE}:latest").push()
-}
-}
-}
-}
-}
-post{
-success{
-echo 'Image successfully built and pushed to Docker Hub'
-}
-failure{
-echo 'Pipeline failed'
-}
-}
+        stage('Push Docker Image') {
+            steps {
+                bat 'docker push %DOCKER_IMAGE%:latest'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Docker image built and pushed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed. Check Console Output.'
+        }
+    }
 }
