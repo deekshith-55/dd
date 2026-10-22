@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "akshatha29/docimg"
+        DOCKER_IMAGE = "deekshith55/imagename2"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                    url: ''
+                    url: 'https://github.com/deekshith-55/dd.git'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PAT%|docker login -u akshatha29 --password-stdin
+                    echo %DOCKER_PAT%|docker login -u deekshith55 --password-stdin
                    if errorlevel 1 exit /b 1
                     '''
                 }
