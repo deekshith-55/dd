@@ -9,7 +9,7 @@ stages{
 
 stage('Clone Repository'){
 steps{
-git 'https://github.com/deekshith-55/jenk.git'
+git 'https://github.com/deekshith-55/dd.git'
 }
 }
 
