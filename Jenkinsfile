@@ -14,10 +14,14 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t %DOCKER_IMAGE%:latest .'
-            }
-        }
+    steps {
+        bat 'whoami'
+        bat 'where docker'
+        bat 'docker --version'
+        bat 'docker info'
+        bat 'docker build -t %DOCKER_IMAGE%:latest .'
+    }
+}
 
         stage('Login to Docker Hub') {
             steps {
