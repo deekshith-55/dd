@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "deekshith55/imagename2"
-         IMAGE_TAG = "latest"
     }
 
     stages {
@@ -16,7 +15,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t %DOCKER_IMAGE%:latest .'
+                bat '"C:\\Users\\student\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t %DOCKER_IMAGE%:latest .'
             }
         }
 
@@ -28,8 +27,8 @@ pipeline {
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PAT%|docker login -u deekshith55 --password-stdin                  
- if errorlevel 1 exit /b 1
+                    echo %DOCKER_PAT%|"C:\\Users\\student\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u deekshith55 --password-stdin
+                    if errorlevel 1 exit /b 1
                     '''
                 }
             }
@@ -37,7 +36,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                bat 'docker push %DOCKER_IMAGE%:latest'
+                bat '"C:\\Users\\student\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" push %DOCKER_IMAGE%:latest'
             }
         }
     }
