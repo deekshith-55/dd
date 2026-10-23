@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "deekshith55/imagename2"
-        IMAGE_TAG = "latest"
+        IMAGE_TAG = "v1"
     }
 
     stages {
