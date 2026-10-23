@@ -15,10 +15,6 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'whoami'
-                bat 'where docker'
-                bat 'docker --version'
-                bat 'docker info'
                 bat 'docker build -t %DOCKER_IMAGE%:latest .'
             }
         }
@@ -30,9 +26,9 @@ pipeline {
                     variable: 'DOCKER_PAT'
                 )]) {
                     bat '''
-                        @echo off
-                        echo %DOCKER_PAT% | docker login -u deekshith55 --password-stdin
-                        if %errorlevel% neq 0 exit /b %errorlevel%
+                    @echo off
+                    echo %DOCKER_PAT%|docker login -u deekshith55 --password-stdin
+                    if errorlevel 1 exit /b 1
                     '''
                 }
             }
